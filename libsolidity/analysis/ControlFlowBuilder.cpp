@@ -238,7 +238,9 @@ bool ControlFlowBuilder::visit(FunctionCall const& _functionCall)
 				m_currentNode = newLabel();
 				return false;
 			case FunctionType::Kind::Require:
+			case FunctionType::Kind::StaticRequire:
 			case FunctionType::Kind::Assert:
+			case FunctionType::Kind::StaticAssert:
 			{
 				solAssert(!!m_revertNode, "");
 				_functionCall.expression().accept(*this);

@@ -398,12 +398,15 @@ void SMTChecker::endVisit(FunctionCall const& _funCall)
 	FunctionType const& funType = dynamic_cast<FunctionType const&>(*_funCall.expression().annotation().type);
 
 	std::vector<ASTPointer<Expression const>> const args = _funCall.arguments();
+
 	switch (funType.kind())
 	{
 	case FunctionType::Kind::Assert:
+	case FunctionType::Kind::StaticAssert:
 		visitAssert(_funCall);
 		break;
 	case FunctionType::Kind::Require:
+	case FunctionType::Kind::StaticRequire:
 		visitRequire(_funCall);
 		break;
 	case FunctionType::Kind::GasLeft:

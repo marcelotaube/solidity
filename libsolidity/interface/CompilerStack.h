@@ -134,6 +134,12 @@ public:
 		m_optimizeRuns = _runs;
 	}
 
+	/// Sets whether to ignore static time checks or not
+	void setIgnoreStaticTimeChecks(bool _ignoreStaticTimeChecks)
+	{
+		m_ignoreStaticTimeChecks = _ignoreStaticTimeChecks;
+	}
+
 	/// Set the EVM version used before running compile.
 	/// When called without an argument it will revert to the default version.
 	void setEVMVersion(EVMVersion _version = EVMVersion{});
@@ -346,6 +352,7 @@ private:
 	ReadCallback::Callback m_readFile;
 	bool m_optimize = false;
 	unsigned m_optimizeRuns = 200;
+	bool  m_ignoreStaticTimeChecks = false;
 	EVMVersion m_evmVersion;
 	std::set<std::string> m_requestedContractNames;
 	std::map<std::string, h160> m_libraries;

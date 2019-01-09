@@ -2620,7 +2620,9 @@ string FunctionType::richIdentifier() const
 	case Kind::ByteArrayPush: id += "bytearraypush"; break;
 	case Kind::ObjectCreation: id += "objectcreation"; break;
 	case Kind::Assert: id += "assert"; break;
+	case Kind::StaticAssert: id += "static_assert"; break;
 	case Kind::Require: id += "require"; break;
+	case Kind::StaticRequire: id += "static_require"; break;
 	case Kind::ABIEncode: id += "abiencode"; break;
 	case Kind::ABIEncodePacked: id += "abiencodepacked"; break;
 	case Kind::ABIEncodeWithSelector: id += "abiencodewithselector"; break;

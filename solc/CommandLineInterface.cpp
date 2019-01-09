@@ -134,7 +134,7 @@ static string const g_strStrictAssembly = "strict-assembly";
 static string const g_strPrettyJson = "pretty-json";
 static string const g_strVersion = "version";
 static string const g_strIgnoreMissingFiles = "ignore-missing";
-
+static string const g_strVerify = "verify";
 static string const g_argAbi = g_strAbi;
 static string const g_argPrettyJson = g_strPrettyJson;
 static string const g_argAllowPaths = g_strAllowPaths;
@@ -169,6 +169,7 @@ static string const g_argStrictAssembly = g_strStrictAssembly;
 static string const g_argVersion = g_strVersion;
 static string const g_stdinFileName = g_stdinFileNameStr;
 static string const g_argIgnoreMissingFiles = g_strIgnoreMissingFiles;
+static string const g_argVerify = g_strVerify;
 
 /// Possible arguments to for --combined-json
 static set<string> const g_combinedJsonArgs
@@ -667,7 +668,8 @@ Allowed options)",
 		(g_argSignatureHashes.c_str(), "Function signature hashes of the contracts.")
 		(g_argNatspecUser.c_str(), "Natspec user documentation of all contracts.")
 		(g_argNatspecDev.c_str(), "Natspec developer documentation of all contracts.")
-		(g_argMetadata.c_str(), "Combined Metadata JSON whose Swarm hash is stored on-chain.");
+		(g_argMetadata.c_str(), "Combined Metadata JSON whose Swarm hash is stored on-chain.")
+		(g_argVerify.c_str(), "Checks keywords 'static_require' and 'static_assert' on runtime (making them equivalent to 'require' and 'assert') ");
 	desc.add(outputComponents);
 
 	po::options_description allOptions = desc;
@@ -876,6 +878,9 @@ bool CommandLineInterface::processInput()
 		unsigned runs = m_args[g_argOptimizeRuns].as<unsigned>();
 		m_compiler->setOptimiserSettings(optimize, runs);
 
+		bool ignoreStaticTimeChecks = m_args.count(g_argVerify) == 0;
+		m_compiler->setIgnoreStaticTimeChecks(ignoreStaticTimeChecks);
+		
 		bool successful = m_compiler->compile();
 
 		for (auto const& error: m_compiler->errors())

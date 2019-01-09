@@ -533,6 +533,8 @@ Json::Value StandardCompiler::compileInternal(Json::Value const& _input)
 		}
 	}
 
+	// TODO: Add setIgnoreStaticTimeChecks?
+
 	map<string, h160> libraries;
 	Json::Value jsonLibraries = settings.get("libraries", Json::Value(Json::objectValue));
 	if (!jsonLibraries.isObject())

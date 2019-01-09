@@ -300,7 +300,6 @@ private:
 		/// Mutable because we will throw out some functions earlier than needed.
 		mutable std::queue<Declaration const*> m_functionsToCompile;
 	} m_functionCompilationQueue;
-
 	eth::AssemblyPointer m_asm;
 	/// Version of the EVM to compile against.
 	EVMVersion m_evmVersion;

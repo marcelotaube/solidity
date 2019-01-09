@@ -982,6 +982,8 @@ public:
 		ByteArrayPush, ///< .push() to a dynamically sized byte array in storage
 		ObjectCreation, ///< array creation using new
 		Assert, ///< assert()
+		StaticAssert, ///< static_assert()
+		StaticRequire, ///< static_require()
 		Require, ///< require()
 		ABIEncode,
 		ABIEncodePacked,

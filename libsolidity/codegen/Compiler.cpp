@@ -35,17 +35,18 @@ void Compiler::compileContract(
 	bytes const& _metadata
 )
 {
-	ContractCompiler runtimeCompiler(nullptr, m_runtimeContext, m_optimize, m_optimizeRuns);
+	ContractCompiler runtimeCompiler(nullptr, m_runtimeContext, m_optimize, m_optimizeRuns, m_ignoreStaticTimeChecks);
 	runtimeCompiler.compileContract(_contract, _contracts);
 	m_runtimeContext.appendAuxiliaryData(_metadata);
 
 	// This might modify m_runtimeContext because it can access runtime functions at
 	// creation time.
-	ContractCompiler creationCompiler(&runtimeCompiler, m_context, m_optimize, 1);
+	ContractCompiler creationCompiler(&runtimeCompiler, m_context, m_optimize, 1, m_ignoreStaticTimeChecks);
 	m_runtimeSub = creationCompiler.compileConstructor(_contract, _contracts);
 
 	m_context.optimise(m_optimize, m_optimizeRuns);
 }
+
 
 eth::AssemblyItem Compiler::functionEntryLabel(FunctionDefinition const& _function) const
 {

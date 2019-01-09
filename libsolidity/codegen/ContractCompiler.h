@@ -38,8 +38,9 @@ namespace solidity {
 class ContractCompiler: private ASTConstVisitor
 {
 public:
-	explicit ContractCompiler(ContractCompiler* _runtimeCompiler, CompilerContext& _context, bool _optimise, size_t _optimise_runs = 200):
+	explicit ContractCompiler(ContractCompiler* _runtimeCompiler, CompilerContext& _context, bool _optimise, size_t _optimise_runs = 200,  bool _ignoreStaticTimeChecks=true):
 		m_optimise(_optimise),
+		m_ignoreStaticTimeChecks(_ignoreStaticTimeChecks),
 		m_optimise_runs(_optimise_runs),
 		m_runtimeCompiler(_runtimeCompiler),
 		m_context(_context)
@@ -131,6 +132,7 @@ private:
 	void storeStackHeight(ASTNode const* _node);
 
 	bool const m_optimise;
+	bool const m_ignoreStaticTimeChecks;
 	size_t const m_optimise_runs = 200;
 	/// Pointer to the runtime compiler in case this is a creation compiler.
 	ContractCompiler* m_runtimeCompiler = nullptr;
