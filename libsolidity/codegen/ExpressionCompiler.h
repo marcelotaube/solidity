@@ -55,8 +55,8 @@ public:
 	/// Appends code for a State Variable accessor function
 	static void appendStateVariableAccessor(CompilerContext& _context, VariableDeclaration const& _varDecl, bool _optimize = false);
 
-	explicit ExpressionCompiler(CompilerContext& _compilerContext, bool _optimize = false):
-		m_optimize(_optimize), m_context(_compilerContext) {}
+	explicit ExpressionCompiler(CompilerContext& _compilerContext, bool _optimize = false, bool _ignoreStaticTimeChecks = false):
+		m_optimize(_optimize), m_ignoreStaticTimeChecks(_ignoreStaticTimeChecks), m_context(_compilerContext) {}
 
 	/// Compile the given @a _expression and leave its value on the stack.
 	void compile(Expression const& _expression);
@@ -125,6 +125,7 @@ private:
 	CompilerUtils utils();
 
 	bool m_optimize;
+	bool m_ignoreStaticTimeChecks;
 	CompilerContext& m_context;
 	std::unique_ptr<LValue> m_currentLValue;
 

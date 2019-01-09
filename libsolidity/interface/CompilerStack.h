@@ -122,6 +122,12 @@ public:
 		m_optimizeRuns = _runs;
 	}
 
+	/// Sets whether to ignore static time checks or not
+	void setIgnoreStaticTimeChecks(bool _ignoreStaticTimeChecks)
+	{
+		m_ignoreStaticTimeChecks = _ignoreStaticTimeChecks;
+	}
+
 	void setEVMVersion(EVMVersion _version = EVMVersion{});
 
 	/// Sets the list of requested contract names. If empty, no filtering is performed and every contract
@@ -318,6 +324,7 @@ private:
 	ReadCallback::Callback m_smtQuery;
 	bool m_optimize = false;
 	unsigned m_optimizeRuns = 200;
+	bool  m_ignoreStaticTimeChecks = false;
 	EVMVersion m_evmVersion;
 	std::set<std::string> m_requestedContractNames;
 	std::map<std::string, h160> m_libraries;

@@ -365,14 +365,14 @@ void SMTChecker::endVisit(FunctionCall const& _funCall)
 	FunctionType const& funType = dynamic_cast<FunctionType const&>(*_funCall.expression().annotation().type);
 
 	std::vector<ASTPointer<Expression const>> const args = _funCall.arguments();
-	if (funType.kind() == FunctionType::Kind::Assert)
+	if (funType.kind() == FunctionType::Kind::Assert || funType.kind() == FunctionType::Kind::StaticAssert)
 	{
 		solAssert(args.size() == 1, "");
 		solAssert(args[0]->annotation().type->category() == Type::Category::Bool, "");
 		checkCondition(!(expr(*args[0])), _funCall.location(), "Assertion violation");
 		addPathImpliedExpression(expr(*args[0]));
 	}
-	else if (funType.kind() == FunctionType::Kind::Require)
+	else if (funType.kind() == FunctionType::Kind::Require || funType.kind() == FunctionType::Kind::StaticRequire)
 	{
 		solAssert(args.size() == 1, "");
 		solAssert(args[0]->annotation().type->category() == Type::Category::Bool, "");
@@ -393,7 +393,7 @@ void SMTChecker::endVisit(Identifier const& _identifier)
 		defineExpr(_identifier, currentValue(*decl));
 	else if (FunctionType const* fun = dynamic_cast<FunctionType const*>(_identifier.annotation().type.get()))
 	{
-		if (fun->kind() == FunctionType::Kind::Assert || fun->kind() == FunctionType::Kind::Require)
+		if (fun->kind() == FunctionType::Kind::Assert || fun->kind() == FunctionType::Kind::StaticAssert  || fun->kind() == FunctionType::Kind::Require || fun->kind() == FunctionType::Kind::StaticRequire)
 			return;
 	}
 }

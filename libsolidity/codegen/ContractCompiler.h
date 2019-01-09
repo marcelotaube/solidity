@@ -38,8 +38,9 @@ namespace solidity {
 class ContractCompiler: private ASTConstVisitor
 {
 public:
-	explicit ContractCompiler(ContractCompiler* _runtimeCompiler, CompilerContext& _context, bool _optimise):
+	explicit ContractCompiler(ContractCompiler* _runtimeCompiler, CompilerContext& _context, bool _optimise, bool _ignoreStaticTimeChecks):
 		m_optimise(_optimise),
+		m_ignoreStaticTimeChecks(_ignoreStaticTimeChecks),
 		m_runtimeCompiler(_runtimeCompiler),
 		m_context(_context)
 	{
@@ -124,6 +125,7 @@ private:
 	eth::AssemblyPointer cloneRuntime() const;
 
 	bool const m_optimise;
+	bool const m_ignoreStaticTimeChecks;
 	/// Pointer to the runtime compiler in case this is a creation compiler.
 	ContractCompiler* m_runtimeCompiler = nullptr;
 	CompilerContext& m_context;

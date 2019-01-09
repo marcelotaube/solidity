@@ -910,6 +910,17 @@ bool ExpressionCompiler::visit(FunctionCall const& _functionCall)
 			m_context << Instruction::POP;
 			break;
 		}
+		
+		case FunctionType::Kind::StaticAssert:
+		case FunctionType::Kind::StaticRequire:
+		{
+			if (m_ignoreStaticTimeChecks) 
+			{
+   				// Skipping static_assert,static_require and skip it.
+				// ensure(functionWithSideEffects(args)) - side effects will not happen - storage changes, calls to external contracts.
+				break;
+			}
+		}
 		case FunctionType::Kind::Assert:
 		case FunctionType::Kind::Require:
 		{
@@ -921,7 +932,7 @@ bool ExpressionCompiler::visit(FunctionCall const& _functionCall)
 				// even if the condition is false, as would be the case for an actual
 				// function call.
 				solAssert(arguments.size() == 2, "");
-				solAssert(function.kind() == FunctionType::Kind::Require, "");
+				solAssert(function.kind() == FunctionType::Kind::Require || function.kind() == FunctionType::Kind::StaticRequire, "");
 				arguments.at(1)->accept(*this);
 				utils().moveIntoStack(1, arguments.at(1)->annotation().type->sizeOnStack());
 			}
@@ -929,7 +940,7 @@ bool ExpressionCompiler::visit(FunctionCall const& _functionCall)
 			// jump if condition was met
 			m_context << Instruction::ISZERO << Instruction::ISZERO;
 			auto success = m_context.appendConditionalJump();
-			if (function.kind() == FunctionType::Kind::Assert)
+			if (function.kind() == FunctionType::Kind::Assert || function.kind() == FunctionType::Kind::StaticAssert)
 				// condition was not met, flag an error
 				m_context.appendInvalid();
 			else if (arguments.size() > 1)

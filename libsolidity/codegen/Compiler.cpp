@@ -34,13 +34,13 @@ void Compiler::compileContract(
 	bytes const& _metadata
 )
 {
-	ContractCompiler runtimeCompiler(nullptr, m_runtimeContext, m_optimize);
+	ContractCompiler runtimeCompiler(nullptr, m_runtimeContext, m_optimize, m_ignoreStaticTimeChecks);
 	runtimeCompiler.compileContract(_contract, _contracts);
 	m_runtimeContext.appendAuxiliaryData(_metadata);
 
 	// This might modify m_runtimeContext because it can access runtime functions at
 	// creation time.
-	ContractCompiler creationCompiler(&runtimeCompiler, m_context, m_optimize);
+	ContractCompiler creationCompiler(&runtimeCompiler, m_context, m_optimize, m_ignoreStaticTimeChecks);
 	m_runtimeSub = creationCompiler.compileConstructor(_contract, _contracts);
 
 	m_context.optimise(m_optimize, m_optimizeRuns);
@@ -52,8 +52,8 @@ void Compiler::compileClone(
 )
 {
 	solAssert(!_contract.isLibrary(), "");
-	ContractCompiler runtimeCompiler(nullptr, m_runtimeContext, m_optimize);
-	ContractCompiler cloneCompiler(&runtimeCompiler, m_context, m_optimize);
+	ContractCompiler runtimeCompiler(nullptr, m_runtimeContext, m_optimize, m_ignoreStaticTimeChecks);
+	ContractCompiler cloneCompiler(&runtimeCompiler, m_context, m_optimize, m_ignoreStaticTimeChecks);
 	m_runtimeSub = cloneCompiler.compileClone(_contract, _contracts);
 
 	m_context.optimise(m_optimize, m_optimizeRuns);

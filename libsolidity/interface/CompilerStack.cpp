@@ -711,7 +711,7 @@ void CompilerStack::compileContract(
 	for (auto const* dependency: _contract.annotation().contractDependencies)
 		compileContract(*dependency, _compiledContracts);
 
-	shared_ptr<Compiler> compiler = make_shared<Compiler>(m_evmVersion, m_optimize, m_optimizeRuns);
+	shared_ptr<Compiler> compiler = make_shared<Compiler>(m_evmVersion, m_optimize, m_optimizeRuns, m_ignoreStaticTimeChecks);
 	Contract& compiledContract = m_contracts.at(_contract.fullyQualifiedName());
 	string metadata = createMetadata(compiledContract);
 	bytes cborEncodedHash =

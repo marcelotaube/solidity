@@ -336,6 +336,8 @@ Json::Value StandardCompiler::compileInternal(Json::Value const& _input)
 	unsigned const optimizeRuns = optimizerSettings.get("runs", Json::Value(200u)).asUInt();
 	m_compilerStack.setOptimiserSettings(optimize, optimizeRuns);
 
+	// TODO: Add setIgnoreStaticTimeChecks?
+
 	map<string, h160> libraries;
 	Json::Value jsonLibraries = settings.get("libraries", Json::Value(Json::objectValue));
 	if (!jsonLibraries.isObject())
